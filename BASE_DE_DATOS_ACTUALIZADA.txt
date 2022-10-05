@@ -1,0 +1,55 @@
+CREATE DATABASE IF NOT EXISTS ´inmueble_alquiler´
+USE ´inmueble_alquiler´;
+
+
+	CREATE TABLE `usuario` (
+	`username` VARCHAR(100) NOT NULL COLLATE 'latin1_swedish_ci',
+	`contrasena` VARCHAR(100) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`nombre` VARCHAR(100) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`apellidos` VARCHAR(100) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`telefono` VARCHAR(50) NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
+	`email` VARCHAR(100) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`direccion_u` VARCHAR(100) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`ciudad_u` VARCHAR(100) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`tipo_u` VARCHAR(50) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	PRIMARY KEY (`username`) USING BTREE
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `inmueble` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`tipo_inmueble` VARCHAR(100) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`n_habitacion` INT(5) NOT NULL,
+	`n_bano` INT(5) NOT NULL,
+	`direccion_i` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
+	`patio` VARCHAR(10) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`parqueadero` VARCHAR(10) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`telefono_i` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
+	`ciudad_i` VARCHAR(100) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`comuna_i` VARCHAR(100) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`valor_alquiler` DOUBLE NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=9
+;
+
+
+
+CREATE TABLE `alquiler` (
+	`id` INT(11) NOT NULL,
+	`username` VARCHAR(15) NOT NULL COLLATE 'latin1_swedish_ci',
+	`tipo_contrato` VARCHAR(100) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`valor_alquiler` DOUBLE(22,2) NULL DEFAULT NULL,
+	`fecha` DATETIME NOT NULL,
+	PRIMARY KEY (`id`, `username`, `fecha`) USING BTREE,
+	INDEX `FK_usuario` (`username`) USING BTREE,
+	CONSTRAINT `FK_inmueble` FOREIGN KEY (`id`) REFERENCES `inmueble_alquiler`.`inmueble` (`id`) ON UPDATE RESTRICT ON DELETE RESTRICT,
+	CONSTRAINT `FK_usuario` FOREIGN KEY (`username`) REFERENCES `inmueble_alquiler`.`usuario` (`username`) ON UPDATE RESTRICT ON DELETE RESTRICT
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
